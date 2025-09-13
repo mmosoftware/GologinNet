@@ -1,5 +1,6 @@
-🚀 Ví dụ sử dụng
-Tạo profile và điều khiển qua Local API
+📌 Ví dụ sử dụng Tạo profile và điều khiển qua Local API
+
+```csharp
 using GoLoginNet;
 using Newtonsoft.Json.Linq;
 using System;
@@ -30,11 +31,57 @@ class Program
         api.DeleteProfile(profileId);
     }
 }
+```
+📌 Import/Export Cookies
 
+```csharp
+
+using GoLoginNet;
+using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
+
+class Program
+{
+    static void Main()
+    {
+        var apiKey = "YOUR_GoLogin_API_KEY";
+        var api = new GoLoginApi(apiKey);
+
+        // Tạo profile mới
+        var profileId = api.CreateProfile("CookieProfile", "", "", "");
+        Console.WriteLine("Profile created: " + profileId);
+
+        // Import cookies vào profile, có thể cho đọc trực tiếp từ file cookie của gologin
+        var cookies = new JArray
+        {
+            new JObject
+            {
+                ["domain"] = ".example.com",
+                ["name"] = "sessionid",
+                ["value"] = "1234567890",
+                ["path"] = "/",
+                ["httpOnly"] = true,
+                ["secure"] = false
+            }
+        };
+        api.ImportCookies(profileId, cookies);
+        Console.WriteLine("Cookies imported into profile: " + profileId);
+
+        // Export cookies từ profile
+        JArray exported = api.GetCookies(profileId);
+        Console.WriteLine("Exported Cookies: " + exported.ToString());
+
+        // Xoá profile nếu cần
+        api.DeleteProfile(profileId);
+    }
+}
+```
 🌐 Sử dụng với Selenium WebDriver
 
 Bạn có thể kết nối Selenium WebDriver tới browser GoLogin đang chạy
 bằng DebuggerAddress từ StartProfileLocal.
+```csharp
 
 using GoLoginNet;
 using OpenQA.Selenium;
@@ -74,6 +121,7 @@ class Program
         api.DeleteProfile(profileId);
     }
 }
+```
 
 🔧 Tính năng chính
 
