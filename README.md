@@ -140,26 +140,6 @@ Profile API: tạo, xoá, start/stop profile qua Cloud hoặc Local API
 
 Proxy support: hỗ trợ HTTP proxy (host, port, username, password)
 
-🛠️ Debug vs Release
-
-Debug build:
-
-Dùng để phát triển và test
-
-Xuất file bin\Debug\GoLoginNet.dll
-
-Bao gồm file .pdb để debug
-
-Release build:
-
-Dùng để deploy hoặc publish NuGet
-
-Xuất file bin\Release\GoLoginNet.dll
-
-Nhẹ và tối ưu hơn
-
-Chọn chế độ build ở thanh công cụ Visual Studio (Debug / Release).
-
 📄 Giấy phép
 
 MIT License — được phép sử dụng tự do cho mục đích cá nhân hoặc thương mại.
