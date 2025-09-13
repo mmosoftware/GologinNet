@@ -16,6 +16,13 @@ class Program
         var profileId = api.CreateProfile("TestProfile", "", "", "");
         Console.WriteLine("Profile created: " + profileId);
 
+        // ID của extension trên GoLogin (hoặc custom extension)
+        var extensionId = "your_extension_id_here";
+
+        // Thêm extension vào profile
+        api.AddExtensionToProfile(profileId, extensionId);
+        Console.WriteLine("Extension added to profile: " + extensionId);
+
         // Start profile qua Local API và lấy DebuggerAddress
         var debuggerAddress = api.StartProfileLocal(profileId);
         Console.WriteLine("Debugger Address: " + debuggerAddress);
