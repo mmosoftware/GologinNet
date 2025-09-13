@@ -1,5 +1,3 @@
-Ok 👍 mình viết cho bạn một file README.md chuẩn để đưa lên GitHub cho thư viện GoLoginNet (.NET Framework 4.5).
-File này vừa giới thiệu, vừa hướng dẫn cài đặt & sử dụng.
 
 # GoLoginNet
 
