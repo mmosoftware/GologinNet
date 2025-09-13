@@ -1,32 +1,5 @@
-
-# GoLoginNet
-
-**GoLoginNet** là một thư viện C# wrapper cho [GoLogin API](https://gologin.com/), hỗ trợ quản lý profile, cookie, extension và khởi chạy browser qua cả Cloud API và Local API.
-
-> Hỗ trợ: **.NET Framework 4.5** (và có thể sử dụng trên .NET Core/.NET 6+ với chỉnh sửa nhỏ).
-
----
-
-## 📦 Cài đặt
-
-### Từ NuGet
-```powershell
-Install-Package GoLoginNet
-
-Hoặc tham chiếu DLL trực tiếp
-
-Build project ở chế độ Release
-
-Lấy file bin\Release\GoLoginNet.dll
-
-Add Reference vào project của bạn
-
-🚀 Sử dụng
-
-Ví dụ khởi tạo API, tạo profile và chạy bằng Local API:
-
-
-
+🚀 Ví dụ sử dụng
+Tạo profile và điều khiển qua Local API
 using GoLoginNet;
 using Newtonsoft.Json.Linq;
 using System;
@@ -44,9 +17,9 @@ class Program
 
         // Start profile qua Local API và lấy DebuggerAddress
         var debuggerAddress = api.StartProfileLocal(profileId);
-        Console.WriteLine("Debugger address: " + debuggerAddress);
+        Console.WriteLine("Debugger Address: " + debuggerAddress);
 
-        // Lấy cookies từ profile
+        // Lấy cookies
         JArray cookies = api.GetCookies(profileId);
         Console.WriteLine("Cookies: " + cookies.ToString());
 
@@ -58,16 +31,80 @@ class Program
     }
 }
 
-🔧 Các tính năng chính
+🌐 Sử dụng với Selenium WebDriver
 
-Quản lý extension: Thêm/xóa Chrome extension vào profile
+Bạn có thể kết nối Selenium WebDriver tới browser GoLogin đang chạy
+bằng DebuggerAddress từ StartProfileLocal.
 
-Quản lý cookies: Import/Export cookies qua Cloud API
+using GoLoginNet;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using System;
 
-Profile API: Tạo, xoá, start/stop profile qua Cloud API hoặc Local API
+class Program
+{
+    static void Main()
+    {
+        var apiKey = "YOUR_GoLogin_API_KEY";
+        var api = new GoLoginApi(apiKey);
 
-Proxy support: Hỗ trợ HTTP proxy (host, port, user, pass)
+        // 1. Tạo profile mới (hoặc dùng profile đã có)
+        var profileId = api.CreateProfile("TestProfile", "", "", "");
+        Console.WriteLine("Profile ID: " + profileId);
 
-📄 License
+        // 2. Start profile qua Local API
+        var debuggerAddress = api.StartProfileLocal(profileId);
+        Console.WriteLine("Debugger Address: " + debuggerAddress);
 
-MIT License — thoải mái sử dụng cho mục đích cá nhân hoặc thương mại.
+        // 3. Kết nối Selenium tới GoLogin browser
+        var chromeOptions = new ChromeOptions();
+        chromeOptions.DebuggerAddress = debuggerAddress;
+
+        var driver = new ChromeDriver(chromeOptions);
+
+        // 4. Điều khiển browser bình thường
+        driver.Navigate().GoToUrl("https://whoer.net/");
+        Console.WriteLine("Tiêu đề trang: " + driver.Title);
+
+        // 5. Đóng browser và stop profile
+        driver.Quit();
+        api.StopProfileLocal(profileId);
+
+        // Xoá profile nếu cần
+        api.DeleteProfile(profileId);
+    }
+}
+
+🔧 Tính năng chính
+
+Quản lý extension: thêm/xoá Chrome extension trong profile
+
+Quản lý cookies: import/export cookies qua Cloud API
+
+Profile API: tạo, xoá, start/stop profile qua Cloud hoặc Local API
+
+Proxy support: hỗ trợ HTTP proxy (host, port, username, password)
+
+🛠️ Debug vs Release
+
+Debug build:
+
+Dùng để phát triển và test
+
+Xuất file bin\Debug\GoLoginNet.dll
+
+Bao gồm file .pdb để debug
+
+Release build:
+
+Dùng để deploy hoặc publish NuGet
+
+Xuất file bin\Release\GoLoginNet.dll
+
+Nhẹ và tối ưu hơn
+
+Chọn chế độ build ở thanh công cụ Visual Studio (Debug / Release).
+
+📄 Giấy phép
+
+MIT License — được phép sử dụng tự do cho mục đích cá nhân hoặc thương mại.
